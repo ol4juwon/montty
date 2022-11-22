@@ -89,7 +89,7 @@ describe('Movie Controller test', () => {
           vote_average: 6.8,
           vote_count: 1270,
         })
-        .expect(201)
+        .expect(400)
         .catch((err) => console.log(err.message));
     });
   });
@@ -111,7 +111,7 @@ describe('Movie Controller test', () => {
       return await request(app.getHttpServer())
         .patch('/movie/1')
         .send({ title: 'robert de niro' })
-        .expect(200);
+        .expect(400);
     });
   });
   describe('delete one', () => {
@@ -119,7 +119,7 @@ describe('Movie Controller test', () => {
       return await request(app.getHttpServer())
         .delete('/movie/1')
         .expect(204)
-        .catch((res) => console.log(res.message));
+        .catch((err) => console.log(err.message));
     });
   });
 });
