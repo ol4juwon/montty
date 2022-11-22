@@ -72,7 +72,7 @@ export class MovieService {
     try {
       console.log('file');
       this.movieRepository.delete(id);
-      
+
       return { data: 'done' };
     } catch (error) {
       return { error };

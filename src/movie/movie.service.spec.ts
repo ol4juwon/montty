@@ -50,4 +50,5 @@ describe('Movie service test', () => {
       expect(moviespy).toBeCalled();
     });
   });
+
 });
