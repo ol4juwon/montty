@@ -70,7 +70,9 @@ export class MovieService {
 
   remove(id: number) {
     try {
+      console.log('file');
       this.movieRepository.delete(id);
+      
       return { data: 'done' };
     } catch (error) {
       return { error };
