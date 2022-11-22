@@ -17,52 +17,57 @@ export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
   @Post()
-  async create(@Body() createMovieDto: CreateMovieDto) {
+  async create(@Response() res, @Body() createMovieDto: CreateMovieDto) {
     try {
+      console.log(createMovieDto);
       const { error, data } = await this.movieService.create(createMovieDto);
+      console.log('loki');
       if (error) {
         console.log(error);
-        return {
+        res.status(400).send({
           error,
           status: 404,
           message: 'Movie Creation failed',
           success: false,
-        };
+        });
       }
-      return {
+      res.status(201).send({
         data,
         status: 201,
         message: 'Movie successfully created',
         success: true,
-      };
+      });
     } catch (error) {
-      return {
+      res.status(500).send({
         error,
         status: 500,
         message: 'Something went wrong',
-      };
+      });
     }
   }
 
   @Get()
-  async findAll(@Response() res) {
+  async findAll() {
     try {
       const { error, data } = await this.movieService.findAll();
       if (error) {
-        res.status(401).send({
+        return {
           error,
+          status: 401,
           message: 'Error getting list of movies',
-        });
+        };
       } else {
-        res.status(200).send({
+        return {
           data,
+          status: 200,
           message: 'Movie request successful',
-        });
+        };
       }
     } catch (err) {
-      res.status(500).send({
+      return {
         error: err,
-      });
+        status: 500,
+      };
     }
   }
 
@@ -78,12 +83,36 @@ export class MovieController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMovieDto: UpdateMovieDto) {
-    return this.movieService.update(+id, updateMovieDto);
+  async update(
+    @Response() res,
+    @Param('id') id: string,
+    @Body() updateMovieDto: UpdateMovieDto,
+  ) {
+    try {
+      const { error, data } = await this.movieService.update(
+        +id,
+        updateMovieDto,
+      );
+      if (data)
+        res.status(200).send({
+          data,
+          message: 'Movie updated successfuly',
+        });
+      if (error)
+        res.status(400).send({ error, message: 'Movie updated failed' });
+    } catch (error) {
+      res.status(500).send({});
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.movieService.remove(+id);
+  remove(@Response() res, @Param('id') id: string) {
+    try {
+      const { error, data } = this.movieService.remove(+id);
+      if (error) res.status(400).send({ message: 'error deleting movie' });
+      res.status(204).send({ data, message: 'Deleted' });
+    } catch (error) {
+      res.status(500).send({});
+    }
   }
 }

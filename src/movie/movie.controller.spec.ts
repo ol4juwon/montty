@@ -66,17 +66,16 @@ describe('Movie Controller test', () => {
 
   describe('When creating movie with valid data', () => {
     it('Respond with valid response', async () => {
-      const expectedData = {
-        ...movieData,
-        status: 201,
-        message: 'Movie successfully created',
-        success: true,
-      };
-      return request(app.getHttpServer())
+      //   const expectedData = {
+      //     ...movieData,
+      //     status: 400,
+      //     message: 'Movie successfully created',
+      //     success: true,
+      //   };
+      return await request(app.getHttpServer())
         .post('/movie')
         .send({
           user_id: 1,
-          adult: false,
           tmdb_id: 436270,
           original_language: 'en',
           original_title: 'Black Adam',
@@ -91,8 +90,7 @@ describe('Movie Controller test', () => {
           vote_count: 1270,
         })
         .expect(201)
-        .expect(expectedData)
-        .catch(console.log);
+        .catch((err) => console.log(err.message));
     });
   });
 
@@ -100,6 +98,28 @@ describe('Movie Controller test', () => {
     it('find movies', () => {
       return request(app.getHttpServer()).get('/movie').expect(200);
       // .expect(instanceof Object)
+    });
+  });
+
+  describe('find one ', () => {
+    it('find one movie', () => {
+      return request(app.getHttpServer()).get('/movie/1').expect(200);
+    });
+  });
+  describe('update one', () => {
+    it('update one', async () => {
+      return await request(app.getHttpServer())
+        .patch('/movie/1')
+        .send({ title: 'robert de niro' })
+        .expect(200);
+    });
+  });
+  describe('delete one', () => {
+    it('delete one', async () => {
+      return await request(app.getHttpServer())
+        .delete('/movie/1')
+        .expect(204)
+        .catch((res) => console.log(res.message));
     });
   });
 });
