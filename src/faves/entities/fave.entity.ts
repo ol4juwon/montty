@@ -1,5 +1,12 @@
-import { IsNumber, IS_NUMBER } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { IsNumber, Max } from 'class-validator';
+import { User } from '../../users/entities/user.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('fave')
 export class Fave {
@@ -16,5 +23,10 @@ export class Fave {
 
   @Column()
   @IsNumber()
+  @Max(100)
   rank: number;
+
+  @ManyToOne(() => User, (fave: User) => fave.Fave)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }

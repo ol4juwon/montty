@@ -17,26 +17,30 @@ export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
   @Post()
-  async create(@Response() res, @Body() createMovieDto: CreateMovieDto) {
+  async create(@Body() createMovieDto: CreateMovieDto) {
     try {
       const { error, data } = await this.movieService.create(createMovieDto);
       if (error) {
-        return res.status(401).send({
+        console.log(error);
+        return {
           error,
+          status: 404,
           message: 'Movie Creation failed',
           success: false,
-        });
+        };
       }
-      res.status(201).send({
+      return {
         data,
+        status: 201,
         message: 'Movie successfully created',
         success: true,
-      });
+      };
     } catch (error) {
-      res.status(400).send({
+      return {
         error,
+        status: 500,
         message: 'Something went wrong',
-      });
+      };
     }
   }
 
@@ -45,7 +49,7 @@ export class MovieController {
     try {
       const { error, data } = await this.movieService.findAll();
       if (error) {
-        res.status(400).send({
+        res.status(401).send({
           error,
           message: 'Error getting list of movies',
         });

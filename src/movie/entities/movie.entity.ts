@@ -1,14 +1,13 @@
-import { IsAlpha, IsNotEmpty, isString, IsString } from 'class-validator';
-import { Genre } from 'src/genres/entities/genre.entity';
+import { IsAlpha, IsNotEmpty, IsString } from 'class-validator';
+import { User } from '../../users/entities/user.entity';
 import {
   BaseEntity,
-  BeforeInsert,
   Column,
-  CreateDateColumn,
+  Double,
   Entity,
-  OneToMany,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('movies')
@@ -17,9 +16,19 @@ export class Movies extends BaseEntity {
   id: number;
 
   @Column()
+  tmdb_id: number;
+
+  @Column()
   @IsAlpha()
   @IsNotEmpty()
   title: string;
+
+  @ManyToOne(() => User, (fave: User) => fave.Fave)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
+
+  @Column()
+  user_id: number;
 
   @Column()
   @IsString()
@@ -39,13 +48,13 @@ export class Movies extends BaseEntity {
   @IsString()
   poster_path: string;
 
-  @Column({ default: 0 })
-  popularity: number;
+  @Column({ type: 'numeric', precision: 10, scale: 2, default: 0.0 })
+  popularity: Double;
 
-  @Column({ default: 0 })
+  @Column({ type: 'numeric', precision: 10, scale: 2, default: 0.0 })
   vote_average: number;
 
-  @Column({ default: 0 })
+  @Column({ type: 'numeric', precision: 10, scale: 2, default: 0.0 })
   vote_count: number;
 
   @Column({ default: false })
@@ -55,20 +64,4 @@ export class Movies extends BaseEntity {
   @IsAlpha()
   @IsNotEmpty()
   release_date: string;
-
-  @OneToMany(() => Genre, (genre: Genre) => genre.id)
-  genre_ids: Genre[];
-
-  @CreateDateColumn({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
-  })
-  created_at: Date;
-
-  @UpdateDateColumn({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
-    onUpdate: 'CURRENT_TIMESTAMP(6)',
-  })
-  public updated_at: Date;
 }

@@ -14,12 +14,22 @@ export class UsersService {
     return this.userRepository.save(createUserDto);
   }
 
-  findAll() {
-    return this.userRepository.find();
+  async findAll() {
+    return await this.userRepository.find({
+      relations: {
+        Fave: true,
+      },
+    });
   }
 
   async findOne(id: number) {
-    return await this.userRepository.findOneBy({ id: id });
+    return await this.userRepository.findOne({
+      where: { id: id },
+      relations: {
+        Fave: true,
+        movies: true,
+      },
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

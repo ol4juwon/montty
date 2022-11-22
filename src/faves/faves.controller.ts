@@ -35,7 +35,7 @@ export class FavesController {
     return this.favesService.update(+id, updateFaveDto);
   }
 
-  @Delete(':id')
+  @Delete(':user_id/:id')
   remove(@Param('id') id: string) {
     return this.favesService.remove(+id);
   }

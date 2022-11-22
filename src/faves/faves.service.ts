@@ -10,12 +10,28 @@ export class FavesService {
   constructor(
     @InjectRepository(Fave) private faveRepository: Repository<Fave>,
   ) {}
-  create(createFaveDto: CreateFaveDto) {
-    return this.faveRepository.save(createFaveDto);
+  async create(createFaveDto: CreateFaveDto) {
+    if (createFaveDto.rank > 100 || createFaveDto.rank < 1)
+      return { error: 'invalid rank provided, rank must be between 1-100.' };
+    const favexists = await this.faveRepository.findOneBy({
+      user_id: createFaveDto.user_id,
+      movie_id: createFaveDto.movie_id,
+    });
+    if (favexists) {
+      console.log('Face', favexists);
+      return { error: 'You already have a movie at that rank' };
+    }
+    const faves = await this.faveRepository.save(createFaveDto);
+    return { data: faves };
   }
 
-  findAll() {
-    return `This action returns all faves`;
+  async findAll() {
+    try {
+      const allFaves = await this.faveRepository.find();
+      return { data: allFaves };
+    } catch (error) {
+      return { error };
+    }
   }
 
   findOne(id: number) {
@@ -23,10 +39,10 @@ export class FavesService {
   }
 
   update(id: number, updateFaveDto: UpdateFaveDto) {
-    return `This action updates a #${id} fave`;
+    return this.faveRepository.update(id, { movie_id: updateFaveDto.movie_id });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} fave`;
+  async remove(id: number) {
+    return await this.faveRepository.delete({ id: id });
   }
 }

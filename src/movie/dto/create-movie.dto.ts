@@ -1,6 +1,5 @@
 import { IsAlpha, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { Genre } from 'src/genres/entities/genre.entity';
-import { Column, OneToMany } from 'typeorm';
+import { Column } from 'typeorm';
 
 export class CreateMovieDto {
   @Column()
@@ -28,6 +27,14 @@ export class CreateMovieDto {
   poster_path: string;
 
   @Column()
+  @IsNotEmpty()
+  user_id: number;
+
+  @Column()
+  @IsNotEmpty()
+  tmdb_id: number;
+
+  @Column()
   @IsNumber()
   popularity: number;
 
@@ -45,7 +52,4 @@ export class CreateMovieDto {
   @IsAlpha()
   @IsNotEmpty()
   release_date: string;
-
-  @OneToMany(() => Genre, (genre: Genre) => genre.id)
-  genre_ids: Genre[];
 }

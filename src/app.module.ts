@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { MovieModule } from './movie/movie.module';
 import { UsersModule } from './users/users.module';
 import { FavesModule } from './faves/faves.module';
-import { GenresModule } from './genres/genres.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -14,7 +13,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     MovieModule,
     UsersModule,
     FavesModule,
-    GenresModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

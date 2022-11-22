@@ -10,25 +10,24 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { Fave } from 'src/faves/entities/fave.entity';
+import { Fave } from '../../faves/entities/fave.entity';
+import { Movies } from '../../movie/entities/movie.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'user_id' })
   id: number;
 
   @Column()
   @IsAlpha()
   @IsNotEmpty()
-  firstName: string;
+  name: string;
 
-  @Column()
-  @IsAlpha()
-  @IsNotEmpty()
-  lastName: string;
-
-  @OneToMany(() => Fave, (fave: Fave) => fave.user_id)
+  @OneToMany(() => Fave, (fave: Fave) => fave.user)
   Fave: Fave[];
+
+  @OneToMany(() => Movies, (movies: Movies) => movies.user)
+  movies: Movies[];
 
   @Column({ unique: true })
   email: string;
@@ -36,27 +35,11 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @Column({ default: false })
-  isAdmin: boolean;
-
-  @Column({ unique: true })
-  @IsNotEmpty()
-  @IsAlpha()
-  username: string;
-
-  @Column({ type: 'boolean', default: false })
-  isActive: boolean;
-
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   created_at: Date;
-
-  @Column({ unique: true })
-  @IsNotEmpty()
-  @IsAlpha()
-  phoneNumber: string;
 
   @Column()
   @UpdateDateColumn({
