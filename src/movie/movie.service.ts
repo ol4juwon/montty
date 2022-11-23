@@ -51,9 +51,12 @@ export class MovieService {
 
   async findOne(id: number) {
     try {
-      const movie = await this.movieRepository.findOneBy({ id: id });
-      return { data: movie };
+      const movie = await this.movieRepository.findOneBy({ id });
+      console.log('checkingf ', movie);
+      if (movie) return { data: movie };
+      return { error: 'Movie not found' };
     } catch (error) {
+      console.log(error);
       return { error };
     }
   }
@@ -70,11 +73,11 @@ export class MovieService {
 
   remove(id: number) {
     try {
-      console.log('file');
       this.movieRepository.delete(id);
 
       return { data: 'done' };
     } catch (error) {
+      console.log(error.message);
       return { error };
     }
   }

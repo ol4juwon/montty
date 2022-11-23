@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Movies } from './entities/movie.entity';
 import { MovieService } from './movie.service';
@@ -39,10 +39,23 @@ describe('Movie Controller test', () => {
       vote_count: 1270,
       user,
     };
-    // const movieRepository = {
-    //   create: jest.fn().mockResolvedValue(movieData),
-    //   save: jest.fn().mockReturnValue(Promise.resolve()),
-    // };
+    const mockData = {
+      id: 1,
+      user_id: 1,
+      tmdb_id: 436270,
+      original_language: 'en',
+      original_title: 'Black Adam',
+      overview:
+        'Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian gods—and imprisoned just as quickly—Black Adam is freed from his earthly tomb, ready to unleash his unique form of justice on the modern world.',
+      popularity: 23828.993,
+      poster_path: '/pFlaoHTZeyNkG83vxsAJiGzfSsa.jpg',
+      release_date: '2022-10-19',
+      title: 'Black Adam',
+      video: false,
+      vote_average: 6.8,
+      vote_count: 1270,
+      user,
+    };
     const module = await Test.createTestingModule({
       controllers: [MovieController],
       imports: [HttpModule],
@@ -55,7 +68,11 @@ describe('Movie Controller test', () => {
         },
         {
           provide: getRepositoryToken(Movies),
-          useValue: {},
+          useValue: {
+            new: jest.fn().mockResolvedValue(mockData),
+            findOneBy: jest.fn(),
+            delete: jest.fn(),
+          },
         },
       ],
     }).compile();
@@ -97,13 +114,12 @@ describe('Movie Controller test', () => {
   describe('Find movies', () => {
     it('find movies', () => {
       return request(app.getHttpServer()).get('/movie').expect(200);
-      // .expect(instanceof Object)
     });
   });
 
   describe('find one ', () => {
     it('find one movie', () => {
-      return request(app.getHttpServer()).get('/movie/1').expect(200);
+      return request(app.getHttpServer()).get('/movie/3').expect(200);
     });
   });
   describe('update one', () => {
@@ -117,7 +133,7 @@ describe('Movie Controller test', () => {
   describe('delete one', () => {
     it('delete one', async () => {
       return await request(app.getHttpServer())
-        .delete('/movie/1')
+        .delete('/movie/2')
         .expect(204)
         .catch((err) => console.log(err.message));
     });
