@@ -119,7 +119,7 @@ describe('Movie Controller test', () => {
 
   describe('find one ', () => {
     it('find one movie', () => {
-      return request(app.getHttpServer()).get('/movie/3').expect(200);
+      return request(app.getHttpServer()).get('/movie/1').expect(200);
     });
   });
   describe('update one', () => {
