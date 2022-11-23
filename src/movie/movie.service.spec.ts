@@ -19,14 +19,20 @@ describe('Movie service test', () => {
         },
         {
           provide: getRepositoryToken(Movies),
-          useValue: {},
+          useValue: {
+            new: jest.fn(),
+            save: jest.fn(),
+            findOneBy: jest.fn(),
+            delete: jest.fn(),
+            update: jest.fn(),
+          },
         },
       ],
     }).compile();
     movieService = await module.get(MovieService);
   });
 
-  describe('', () => {
+  describe('creating Movies', () => {
     it('attempt to create movies with empty value', async () => {
       expect.assertions(2);
       const moviespy = jest.spyOn(movieService, 'create');
@@ -45,8 +51,45 @@ describe('Movie service test', () => {
         vote_average: 6.8,
         vote_count: 1270,
       });
-
       expect(movieService.create).toBeCalled();
+      expect(moviespy).toBeCalled();
+    });
+  });
+
+  describe('Getting Movies', () => {
+    it('attempt to get qll movies', async () => {
+      expect.assertions(1);
+      // const moviespy = jest.spyOn(movieService, 'findAll');
+      const anwer = await movieService.findAll();
+      expect(anwer).toBeDefined();
+      // expect(moviespy).toBeCalled();
+    });
+  });
+
+  describe('Getting one Movies', () => {
+    it('attempt to create movies with empty value', async () => {
+      expect.assertions(2);
+      const moviespy = jest.spyOn(movieService, 'findOne');
+      await movieService.findOne(1);
+      expect(movieService.findOne).toBeCalled();
+      expect(moviespy).toBeCalled();
+    });
+  });
+  describe('update one Movies', () => {
+    it('attempt to create movies with empty value', async () => {
+      expect.assertions(2);
+      const moviespy = jest.spyOn(movieService, 'update');
+      await movieService.update(1, { title: 'ola' });
+      expect(movieService.update).toBeCalled();
+      expect(moviespy).toBeCalled();
+    });
+  });
+  describe('delete one Movie', () => {
+    it('attempt to delete movies', async () => {
+      expect.assertions(2);
+      const moviespy = jest.spyOn(movieService, 'remove');
+      await movieService.remove(1);
+      expect(movieService.remove).toBeCalled();
       expect(moviespy).toBeCalled();
     });
   });

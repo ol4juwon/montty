@@ -70,8 +70,9 @@ describe('Movie Controller test', () => {
           provide: getRepositoryToken(Movies),
           useValue: {
             new: jest.fn().mockResolvedValue(mockData),
-            findOneBy: jest.fn(),
-            delete: jest.fn(),
+            findOneBy: jest.fn().mockReturnValue(mockData),
+            delete: jest.fn().mockReturnValue({}),
+            update: jest.fn(),
           },
         },
       ],

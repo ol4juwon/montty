@@ -10,33 +10,44 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
-  create(createUserDto: CreateUserDto) {
-    return this.userRepository.save(createUserDto);
+  async create(createUserDto: CreateUserDto) {
+    try {
+      const user = await this.userRepository.save(createUserDto);
+      return { data: user };
+    } catch (error) {
+      return { error: error.details };
+    }
   }
 
   async findAll() {
-    return await this.userRepository.find({
-      relations: {
-        Fave: true,
-      },
-    });
+    try {
+      const user = await this.userRepository.find({
+        relations: {
+          Fave: true,
+        },
+      });
+      if (user) return { data: user };
+
+      return { error: 'no user found' };
+    } catch (error) {
+      return { error: error.details };
+    }
   }
 
   async findOne(id: number) {
-    return await this.userRepository.findOne({
-      where: { id: id },
-      relations: {
-        Fave: true,
-        movies: true,
-      },
-    });
-  }
+    try {
+      const user = await this.userRepository.findOne({
+        where: { id: id },
+        relations: {
+          Fave: true,
+          movies: true,
+        },
+      });
+      if (user) return { data: user };
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+      return { error: 'no user found' };
+    } catch (error) {
+      return { error: error.details };
+    }
   }
 }

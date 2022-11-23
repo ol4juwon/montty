@@ -17,9 +17,7 @@ export class MovieService {
   ) {}
   async create(createMovieDto: CreateMovieDto) {
     try {
-      console.log('loop');
       const movie = await this.movieRepository.save(createMovieDto);
-      console.log('rock ', movie);
       return { data: movie };
     } catch (err) {
       return { error: err.message };
@@ -32,7 +30,7 @@ export class MovieService {
       const key = this.configService.get('TMDB_KEY');
       // const movies = await this.movieRepository.find();
       // const movies = await this.tmdb.getMovies('discover/movie');
-      const response = this.httpService
+      const response = await this.httpService
         .get(`${url}/discover/movie?api_key=${key}`)
         .pipe(
           map((res) => {
@@ -52,11 +50,9 @@ export class MovieService {
   async findOne(id: number) {
     try {
       const movie = await this.movieRepository.findOneBy({ id });
-      console.log('checkingf ', movie);
       if (movie) return { data: movie };
       return { error: 'Movie not found' };
     } catch (error) {
-      console.log(error);
       return { error };
     }
   }
@@ -64,7 +60,7 @@ export class MovieService {
   async update(id: number, updateMovieDto: UpdateMovieDto) {
     try {
       const movie = await this.movieRepository.update(id, updateMovieDto);
-      console.log('local', movie);
+      console.log('updated movie', movie);
       return { data: movie };
     } catch (error) {
       return { error: error };
@@ -77,7 +73,6 @@ export class MovieService {
 
       return { data: 'done' };
     } catch (error) {
-      console.log(error.message);
       return { error };
     }
   }

@@ -17,32 +17,63 @@ export class FavesService {
       user_id: createFaveDto.user_id,
       movie_id: createFaveDto.movie_id,
     });
+
     if (favexists) {
       console.log('Face', favexists);
       return { error: 'You already have a movie at that rank' };
     }
-    const faves = await this.faveRepository.save(createFaveDto);
-    return { data: faves };
+    try {
+      const faves = await this.faveRepository.save(createFaveDto);
+      return { data: faves };
+    } catch (error) {
+      console.log(error);
+      return { error: error.message };
+    }
   }
 
   async findAll() {
     try {
       const allFaves = await this.faveRepository.find();
-      return { data: allFaves };
+      // console.log("Faves", allFaves);
+      if (allFaves) return { data: allFaves };
+      return { error: 'failed' };
+    } catch (error) {
+      // console.log(error);
+      return { error };
+    }
+  }
+
+  async findOne(id: number) {
+    try {
+      const fave = await this.faveRepository.findOneBy({ id });
+      // console.log('user fave', fave);
+      if (fave) return { data: fave };
+      return { error: 'failed' };
     } catch (error) {
       return { error };
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} fave`;
-  }
-
-  update(id: number, updateFaveDto: UpdateFaveDto) {
-    return this.faveRepository.update(id, { movie_id: updateFaveDto.movie_id });
+  async update(id: number, updateFaveDto: UpdateFaveDto) {
+    try {
+      const updated = await this.faveRepository.update(id, {
+        movie_id: updateFaveDto.movie_id,
+      });
+      // console.log(updated);
+      if (updated?.affected > 0) return { data: 'success' };
+      return { error: 'failed' };
+    } catch (error) {
+      return { error: error.details };
+    }
   }
 
   async remove(id: number) {
-    return await this.faveRepository.delete({ id: id });
+    try {
+      const del = await this.faveRepository.delete({ id: id });
+      if (del.affected == 0) return { data: 'done' };
+      return { error: 'failed' };
+    } catch (error) {
+      return { error: error.details };
+    }
   }
 }

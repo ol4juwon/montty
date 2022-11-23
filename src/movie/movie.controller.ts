@@ -74,7 +74,6 @@ export class MovieController {
   @Get(':id')
   async findOne(@Response() res, @Param('id') id: string) {
     try {
-      console.log('===>');
       const { error, data } = await this.movieService.findOne(+id);
       if (error) {
         res.status(404).send({ error });
@@ -82,7 +81,6 @@ export class MovieController {
         res.status(200).send({ data });
       }
     } catch (err) {
-      console.log('--->', err);
       res.status(500).send({ error: err.details });
     }
   }
