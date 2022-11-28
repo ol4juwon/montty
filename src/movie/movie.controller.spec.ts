@@ -15,13 +15,8 @@ describe('Movie Controller test', () => {
   let app: INestApplication;
   let movieData;
   let user: User;
-  //   let movieService: MovieService;
-  //   let httpService: HttpService;
+
   beforeEach(async () => {
-    // movieData = new Movies();
-    // movieData.user_id = 1;
-    // movieData.original_language = 'en';
-    // movieData.
     movieData = {
       id: 1,
       user_id: 1,
@@ -73,6 +68,12 @@ describe('Movie Controller test', () => {
             findOneBy: jest.fn().mockReturnValue(mockData),
             delete: jest.fn().mockReturnValue({}),
             update: jest.fn(),
+            save: jest.fn().mockReturnValue({
+              data: movieData,
+              status: 201,
+              message: 'Movie successfully created',
+              success: true,
+            }),
           },
         },
       ],
@@ -84,30 +85,16 @@ describe('Movie Controller test', () => {
 
   describe('When creating movie with valid data', () => {
     it('Respond with valid response', async () => {
-      //   const expectedData = {
-      //     ...movieData,
-      //     status: 400,
-      //     message: 'Movie successfully created',
-      //     success: true,
-      //   };
+        const expectedData = {
+          data: movieData,
+          status: 400,
+          message: 'Movie successfully created',
+          success: true,
+        };
       return await request(app.getHttpServer())
         .post('/movie')
-        .send({
-          user_id: 1,
-          tmdb_id: 436270,
-          original_language: 'en',
-          original_title: 'Black Adam',
-          overview:
-            'Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian gods—and imprisoned just as quickly—Black Adam is freed from his earthly tomb, ready to unleash his unique form of justice on the modern world.',
-          popularity: 23828.993,
-          poster_path: '/pFlaoHTZeyNkG83vxsAJiGzfSsa.jpg',
-          release_date: '2022-10-19',
-          title: 'Black Adam',
-          video: false,
-          vote_average: 6.8,
-          vote_count: 1270,
-        })
-        .expect(400)
+        .send(movieData)
+        .expect(201)
         .catch((err) => console.log(err.message));
     });
   });
@@ -128,7 +115,7 @@ describe('Movie Controller test', () => {
       return await request(app.getHttpServer())
         .patch('/movie/1')
         .send({ title: 'robert de niro' })
-        .expect(400);
+        .expect(200);
     });
   });
   describe('delete one', () => {

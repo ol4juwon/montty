@@ -38,6 +38,7 @@ describe('Movie Controller test', () => {
             delete: jest.fn().mockReturnValue({}),
             find: jest.fn().mockReturnValue(userdata),
             update: jest.fn(),
+            save: jest.fn(),
           },
         },
       ],
@@ -48,16 +49,26 @@ describe('Movie Controller test', () => {
   });
 
   describe('Create new user', () => {
-    it('Respond with valid response', async () => {
+    it('create with valid data', async () => {
       return await request(app.getHttpServer())
-        .post('/user')
+        .post('/users')
         .send({
           name: 'olajuwon',
           email: 'olar@mails.com',
           password: 'admin1234',
         })
-        .expect(400)
+        .expect(201)
         .catch((err) => console.log(err.message));
+    });
+    it('create with invalid data', async () => {
+      return await request(app.getHttpServer())
+        .post('/users')
+        .send({
+          name: 988,
+          email: 'olar@mails.com',
+          password: 'admin1234',
+        })
+        .expect(400);
     });
   });
 

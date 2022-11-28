@@ -19,11 +19,8 @@ export class MovieController {
   @Post()
   async create(@Response() res, @Body() createMovieDto: CreateMovieDto) {
     try {
-      console.log(createMovieDto);
       const { error, data } = await this.movieService.create(createMovieDto);
-      console.log('loki');
       if (error) {
-        console.log(error);
         res.status(400).send({
           error,
           status: 404,

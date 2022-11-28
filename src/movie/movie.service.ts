@@ -60,8 +60,8 @@ export class MovieService {
   async update(id: number, updateMovieDto: UpdateMovieDto) {
     try {
       const movie = await this.movieRepository.update(id, updateMovieDto);
-      console.log('updated movie', movie);
-      return { data: movie };
+      if (movie) return { data: movie };
+      return { error: 'failed' };
     } catch (error) {
       return { error: error };
     }

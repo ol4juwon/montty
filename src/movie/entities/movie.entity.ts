@@ -1,4 +1,4 @@
-import { IsAlpha, IsNotEmpty, IsString } from 'class-validator';
+import { IsAlpha, IsAlphanumeric, IsNotEmpty, isString, IsString } from 'class-validator';
 import { User } from '../../users/entities/user.entity';
 import {
   BaseEntity,
@@ -19,7 +19,7 @@ export class Movies extends BaseEntity {
   tmdb_id: number;
 
   @Column()
-  @IsAlpha()
+  @IsString()
   @IsNotEmpty()
   title: string;
 

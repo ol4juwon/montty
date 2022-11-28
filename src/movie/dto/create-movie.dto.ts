@@ -3,7 +3,7 @@ import { Column } from 'typeorm';
 
 export class CreateMovieDto {
   @Column()
-  @IsAlpha()
+  @IsString()
   @IsNotEmpty()
   title: string;
 
@@ -49,7 +49,7 @@ export class CreateMovieDto {
   video: boolean;
 
   @Column()
-  @IsAlpha()
+  @IsString()
   @IsNotEmpty()
   release_date: string;
 }
