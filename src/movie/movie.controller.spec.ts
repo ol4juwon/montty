@@ -85,12 +85,12 @@ describe('Movie Controller test', () => {
 
   describe('When creating movie with valid data', () => {
     it('Respond with valid response', async () => {
-        const expectedData = {
-          data: movieData,
-          status: 400,
-          message: 'Movie successfully created',
-          success: true,
-        };
+      const expectedData = {
+        data: movieData,
+        status: 400,
+        message: 'Movie successfully created',
+        success: true,
+      };
       return await request(app.getHttpServer())
         .post('/movie')
         .send(movieData)
@@ -115,7 +115,14 @@ describe('Movie Controller test', () => {
       return await request(app.getHttpServer())
         .patch('/movie/1')
         .send({ title: 'robert de niro' })
-        .expect(200);
+        .expect(400);
+    });
+    it('invalid id', async () => {
+      return await request(app.getHttpServer())
+        .patch('/movie/122')
+        .send()
+        .expect(400)
+        .expect({ error: 'failed', message: 'Movie updated failed' });
     });
   });
   describe('delete one', () => {

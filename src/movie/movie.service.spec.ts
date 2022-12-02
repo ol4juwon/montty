@@ -5,6 +5,7 @@ import { MovieService } from './movie.service';
 import mockedConfigService from '../mocks/config.service';
 import { ConfigService } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
+import { CreateMovieDto } from './dto/create-movie.dto';
 describe('Movie service test', () => {
   let movieService: MovieService;
   beforeEach(async () => {
@@ -53,6 +54,11 @@ describe('Movie service test', () => {
       });
       expect(movieService.create).toBeCalled();
       expect(moviespy).toBeCalled();
+    });
+    it('', async () => {
+      const c = new CreateMovieDto();
+      const response = await movieService.create(c);
+      expect(response.error).toBeDefined();
     });
   });
 

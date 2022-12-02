@@ -18,7 +18,9 @@ export class MovieService {
   async create(createMovieDto: CreateMovieDto) {
     try {
       const movie = await this.movieRepository.save(createMovieDto);
-      return { data: movie };
+      if (movie) return { data: movie };
+
+      return { error: 'Failed to create movie' };
     } catch (err) {
       return { error: err.message };
     }
