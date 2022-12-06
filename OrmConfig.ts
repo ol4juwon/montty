@@ -21,4 +21,13 @@ module.exports = {
   },
   factories: ['src/database/factories/**/*{.ts,.js}'],
   seeds: ['dist/seeds/**/*{.ts,.js}'],
+  tunnel: {
+    host: '6.6.6.6',
+    username: 'vagrant',
+    // privateKey: await fs.readFile('path/to/private_key'),
+
+    //And forward the inner dstPort (on which mysql is running) to the host (where your app is running) with a random port
+    dstPort: 3306,
+    localPort: 22,
+  },
 };
