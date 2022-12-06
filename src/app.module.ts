@@ -28,7 +28,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         subscribers: ['src/subscriber/**/*.{js,ts}'],
         synchronize: true,
         logging: true,
-        tunnel: { host: '' },
       }),
     }),
   ],
