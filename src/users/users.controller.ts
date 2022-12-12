@@ -34,7 +34,7 @@ export class UsersController {
     try {
       const { error, data } = await this.usersService.findAll();
       if (error) {
-        res.status(404).send({ error });
+        res.status(400).send({ error });
       } else {
         res.status(200).send({ data });
       }
@@ -47,7 +47,7 @@ export class UsersController {
     try {
       const { error, data } = await this.usersService.findOne(+id);
       if (error) {
-        res.status(404).send({ error });
+        res.status(400).send({ error });
       } else {
         res.status(200).send({ data });
       }

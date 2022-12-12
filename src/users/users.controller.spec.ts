@@ -22,10 +22,10 @@ describe('Movie Controller test', () => {
 
     const module = await Test.createTestingModule({
       controllers: [UsersController],
-      imports: [HttpModule],
+      // imports: [HttpModule],
       providers: [
         UsersService,
-        HttpModule,
+        // HttpModule,
         {
           provide: ConfigService,
           useValue: mockedConfigService,

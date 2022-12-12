@@ -23,7 +23,7 @@ export class MovieController {
       if (error) {
         res.status(400).send({
           error,
-          status: 404,
+          status: 400,
           message: 'Movie Creation failed',
           success: false,
         });
@@ -48,9 +48,9 @@ export class MovieController {
     try {
       const { error, data } = await this.movieService.findAll();
       if (error) {
-        res.status(401).send({
+        res.status(400).send({
           error,
-          status: 401,
+          status: 400,
           message: 'Error getting list of movies',
         });
       } else {
@@ -73,7 +73,7 @@ export class MovieController {
     try {
       const { error, data } = await this.movieService.findOne(+id);
       if (error) {
-        res.status(404).send({ error });
+        res.status(400).send({ error });
       } else {
         res.status(200).send({ data });
       }

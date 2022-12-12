@@ -1,6 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Test } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { Movies } from './entities/movie.entity';
 import { MovieService } from './movie.service';
 import mockedConfigService from '../mocks/config.service';

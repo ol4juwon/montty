@@ -36,7 +36,7 @@ export class FavesController {
       const { error, data } = await this.favesService.findAll();
 
       if (error) {
-        res.status(404).send({ error, message: 'failed' });
+        res.status(400).send({ error, message: 'failed' });
       } else {
         res.status(200).send({ data, message: 'done' });
       }
@@ -50,7 +50,7 @@ export class FavesController {
     try {
       const { error, data } = await this.favesService.findOne(+id);
       if (error) {
-        res.status(404).send({ error });
+        res.status(400).send({ error });
       } else {
         res.status(200).send({ data });
       }
@@ -71,7 +71,7 @@ export class FavesController {
         updateFaveDto,
       );
       if (error) {
-        res.status(404).send({});
+        res.status(400).send({});
       } else {
         res.status(200).send({ data });
       }
@@ -85,7 +85,7 @@ export class FavesController {
     try {
       const { error, data } = await this.favesService.remove(+id);
       if (error) {
-        res.status(404).send({});
+        res.status(400).send({});
       } else {
         res.status(200).send({ data });
       }
